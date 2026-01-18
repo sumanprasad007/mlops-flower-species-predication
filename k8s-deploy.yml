@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-flower-species
+  labels:
+    app: mlops-flower-species
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mlops-flower-species
+  template:
+    metadata:
+      labels:
+        app: mlops-flower-species
+    spec:
+      containers:
+      - name: mlops-flower-species
+        image: sumanprasad007/mlops-flower-species:v1
+        ports:
+        - containerPort: 8000
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlops-flower-species-service
+spec:
+  selector:
+    app: mlops-flower-species
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+      nodePort: 30000
